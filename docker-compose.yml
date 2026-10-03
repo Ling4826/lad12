@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: lad12-db-1
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: selabdb
+    volumes:
+      - lad12_pqdata:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    container_name: lad12-adminer-1
+    ports:
+      - "9000:8080"
+volumes:
+  lad12_pqdata:
