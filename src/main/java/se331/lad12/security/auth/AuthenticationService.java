@@ -19,6 +19,9 @@ import se331.lad12.security.user.Role;
 import se331.lad12.security.user.User;
 import se331.lad12.security.user.UserRepository;
 import se331.lad12.util.LabMapper;
+import se331.lad12.entity.Organizer;
+import se331.lad12.repository.OrganizerRepository;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +35,7 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   private final ObjectMapper objectMapper;
+  private final OrganizerRepository organizerRepository;
 
   public AuthenticationResponse register(RegisterRequest request) {
     User user = User.builder()
@@ -44,14 +48,23 @@ public class AuthenticationService {
             .enabled(true)
             .build();
     var savedUser = repository.save(user);
+
+    Organizer organizer = organizerRepository.save(Organizer.builder()
+            .name(request.getUsername())
+            .user(savedUser)
+            .build());
+    savedUser.setOrganizer(organizer);
+
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
     saveUserToken(savedUser, jwtToken);
     return AuthenticationResponse.builder()
             .accessToken(jwtToken)
             .refreshToken(refreshToken)
+            .user(LabMapper.INSTANCE.getOrganizerAuthDTO(organizer))
             .build();
   }
+
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
     authenticationManager.authenticate(
