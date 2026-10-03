@@ -4,7 +4,12 @@ spring:
       - db
       - local
   application:
-    name: 331-backend-lad12
+    security:
+      jwt:
+        secret-key: 2c9a7cf69be6c978ecf9df2cbdfdd1b2b8e4ecdcbd0a49129ca8a0722c9fe02a
+        expiration: 86400000
+        refresh-token:
+          expiration: 604800000
   mvc:
     problemdetails:
       enabled: true
