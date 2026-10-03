@@ -27,6 +27,11 @@ public class SecurityConfiguration {
     });
     http
             .csrf((crsf) -> crsf.disable())
+            .authorizeHttpRequests((authorize) -> {
+              authorize.requestMatchers("/api/v1/auth/**").permitAll()
+                      .anyRequest().authenticated();
+            })
+
 
 
             .sessionManagement((session) ->{
