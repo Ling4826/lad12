@@ -11,6 +11,10 @@ import java.util.List;
 import se331.lad12.entity.Participant;
 import se331.lad12.entity.ParticipantDetailDTO;
 
+import org.mapstruct.Mapping;
+import se331.lad12.entity.OrganizerAuthDTO;
+
+
 @Mapper
 public interface LabMapper {
     LabMapper INSTANCE = Mappers.getMapper(LabMapper.class);
@@ -26,4 +30,8 @@ public interface LabMapper {
     ParticipantDetailDTO getParticipantDetailDto(Participant participant);
 
     List<ParticipantDetailDTO> getParticipantDetailDto(List<Participant> participants);
+
+    @Mapping(target = "roles", source = "user.roles")
+    OrganizerAuthDTO getOrganizerAuthDTO(Organizer organizer);
+
 }
