@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
+import se331.lad12.security.user.User;
 
 @Data
 @Builder
@@ -23,4 +24,9 @@ public class Organizer {
     @OneToMany(mappedBy = "organizer")
     @Builder.Default
     List<Event> ownEvents = new ArrayList<>();
+
+    @OneToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    User user;
 }

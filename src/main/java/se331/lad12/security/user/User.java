@@ -9,6 +9,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import se331.lad12.security.token.Token;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import se331.lad12.entity.Organizer;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +46,12 @@ public class User implements UserDetails {
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+
+  @OneToOne(mappedBy = "user")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  private Organizer organizer;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return roles.stream().map(role -> new SimpleGrantedAuthority(role.name())).collect(Collectors.toList());
