@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.config.Customizer;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -30,9 +31,14 @@ public class SecurityConfiguration {
             .cors(Customizer.withDefaults())
             .csrf((crsf) -> crsf.disable())
             .authorizeHttpRequests((authorize) -> {
-              authorize.requestMatchers("/api/v1/auth/**").permitAll()
-                      .anyRequest().authenticated();
+                authorize.requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/events").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/organizers").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .anyRequest().authenticated();
             })
+
+
 
 
 
